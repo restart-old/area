@@ -3,19 +3,44 @@ package area
 import "github.com/go-gl/mathgl/mgl64"
 
 type Area struct {
-	min, max mgl64.Vec2
+	minX, maxX, minY, maxY float64
 }
 
-func NewArea(min, max mgl64.Vec2) Area {
+func maxBound(b1, b2 float64) float64 {
+	if b1 > b2 {
+		return b1
+	}
+	return b2
+}
+func minBound(b1, b2 float64) float64 {
+	if b1 < b2 {
+		return b1
+	}
+	return b2
+}
+
+func NewArea(b1, b2 mgl64.Vec2) Area {
 	return Area{
-		min: min,
-		max: max,
+		minX: minBound(b1.X(), b2.X()),
+		maxX: maxBound(b1.X(), b2.X()),
+
+		minY: minBound(b1.Y(), b2.Y()),
+		maxY: maxBound(b1.Y(), b2.Y()),
 	}
 }
 
 func (area Area) Vec2Within(vec mgl64.Vec2) bool {
-	if vec.X() < area.min.X() || vec.X() > area.max.X() {
-		return false
-	}
-	return vec.Y() >= area.min.Y() && vec.Y() <= area.max.Y()
+	return vec.X() > area.minX && vec.X() < area.maxX && vec.Y() > area.minY && vec.Y() < area.maxY
+}
+
+func (area Area) Vec2WithinOrEqual(vec mgl64.Vec2) bool {
+	return vec.X() >= area.minX && vec.X() <= area.maxX && vec.Y() >= area.minY && vec.Y() <= area.maxY
+}
+
+func (area Area) Vec3WithinOrEqualXZ(vec mgl64.Vec3) bool {
+	return vec.X() >= area.minX && vec.X() <= area.maxX && vec.Z() >= area.minY && vec.Z() <= area.maxY
+}
+
+func (area Area) Vec3WithinXZ(vec mgl64.Vec3) bool {
+	return vec.X() > area.minX && vec.X() < area.maxX && vec.Z() > area.minY && vec.Z() < area.maxY
 }

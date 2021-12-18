@@ -6,6 +6,9 @@ type Vec2 struct {
 	minX, maxX, minY, maxY float64
 }
 
+func (v Vec2) Max() mgl64.Vec2 { return mgl64.Vec2{v.maxX, v.maxY} }
+func (v Vec2) Min() mgl64.Vec2 { return mgl64.Vec2{v.minX, v.minY} }
+
 func NewVec2(b1, b2 mgl64.Vec2) Vec2 {
 	return Vec2{
 		minX: minBound(b1.X(), b2.X()),

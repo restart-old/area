@@ -1,4 +1,4 @@
-module github.com/dragonfly-on-steroids/area
+module github.com/df-plus/area
 
 go 1.17
 
